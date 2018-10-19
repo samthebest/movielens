@@ -11,7 +11,7 @@ case class Movie(movieID: Int, title: String, genres: List[String])
 
 case class UserStats(userID: Int, numberOfMovies: Int, averageRating: Double)
 
-case class GenreStats(genre: String, numberOfMovies: Int)
+case class GenreCount(genre: String, numberOfMovies: Long)
 
 case class MovieRank(rank: Int, movieID: Int, title: String, averageRating: Double)
 

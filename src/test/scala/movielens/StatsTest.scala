@@ -25,4 +25,24 @@ object StatsTest extends Specification {
       )
     }
   }
+
+  "Stats.moviesToGenreCounts" should {
+    "Take an RDD of Movies and return an RDD of GenreCounts, i.e. list of unique Genres and no of movies " +
+      "under each genre" in {
+      Stats.moviesToGenreCounts(sc.makeRDD(Seq(
+        Movie(1, "", List("a", "b")),
+        Movie(2, "", List("a", "b", "c")),
+        Movie(3, "", List("b")),
+        Movie(4, "", List("a")),
+        Movie(5, "", List("a")),
+        Movie(5, "", List("d", "e"))
+      ))).collect().toList.sortBy(_.genre) must_=== List(
+        GenreCount("a", 4),
+        GenreCount("b", 3),
+        GenreCount("c", 1),
+        GenreCount("d", 1),
+        GenreCount("e", 1)
+      )
+    }
+  }
 }

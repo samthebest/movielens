@@ -48,15 +48,16 @@ object IOTest extends Specification {
     }
   }
 
-  "IO.writeUserStats" should {
+  "IO.write" should {
     "Write some user stats to a file in CSV" in {
       val tempFile: Path = Files.createTempDirectory("MovieLensTest")
 
       val path = tempFile.toString + "/userStats"
 
-      IO.writeUserStats(
+      import ss.implicits._
+      IO.write(
         path = path,
-        userStats = sc.makeRDD(Seq(
+        data = sc.makeRDD(Seq(
           UserStats(1, 1, 1.1),
           UserStats(2, 5, 1.1),
           UserStats(3, 10, 4.5)

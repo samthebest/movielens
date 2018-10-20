@@ -42,7 +42,7 @@ object IOTest extends Specification {
           Rating(1, 1197, 3),
           Rating(1, 1287, 5),
           Rating(4, 2804, 5),
-          Rating(4, 594, 4),
+          Rating(4, 594, 3),
           Rating(4, 919, 4)
         ).sortBy(_.movieID)
     }

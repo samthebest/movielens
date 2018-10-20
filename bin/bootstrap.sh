@@ -3,6 +3,7 @@
 set -e
 
 mkdir -p data
+mkdir -p data/target
 test -f data/ml-1m.zip || wget -P data/ http://files.grouplens.org/datasets/movielens/ml-1m.zip
 
 which unzip >/dev/null

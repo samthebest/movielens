@@ -1,4 +1,6 @@
-project
+project/build.properties
+project/project
+project/target
 target
 data
 .idea

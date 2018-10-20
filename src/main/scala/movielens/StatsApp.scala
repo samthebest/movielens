@@ -4,5 +4,7 @@ package movielens
 object StatsApp {
   def main(args: Array[String]): Unit = {
 
+
+
   }
 }

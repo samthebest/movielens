@@ -8,7 +8,7 @@ Produces files from MovieLens data with:
 
 # Project Setup
 
-You need `sbt` installed to build and run tests.
+You need `sbt` installed to build and run tests.  Spark doesn't work with java 10, recommend java 8.
 
 Mac (assumes brew is installed): `brew install sbt`
 
@@ -45,13 +45,15 @@ e.g. Yum distros: `sudo yum install unzip`
 
 After building
 
-`java -cp target/movielens-1.jar`
+`java -cp target/scala-2.11/movielens-assembly-1.jar movielens.StatsApp`
 
 Output will be in `data/output/`
 
 # Test
 
-All tests `sbt test it:test`. Unit only `sbt test`, end to end only `sbt it:test`.
+All tests `sbt coverage test it:test`. Unit only `sbt coverage test`, end to end only `sbt coverage it:test`.
+
+To generate test report run `sbt coverageReport` then open ./target/scala-2.11/scoverage-report/index.html in Chrome.
 
 # Comments
 

@@ -28,7 +28,7 @@ object Stats {
       ratings.map(rating => rating.movieID -> CountAndRatingTotal(1, rating.rating))
       .reduceByKey(addCountAndRatingTotal)
       .mapValues(countAndRatingTotal => countAndRatingTotal.ratingTotal.toDouble / countAndRatingTotal.movieCount)
-      .top(limit)(Ordering.by[(Int, Double), Double](_._2))
+      .top(limit)(Ordering.by(_.swap))
       .zipWithIndex.map {
         case ((movieID, averageRating), rank) => movieID ->(averageRating, rank + 1)
       }

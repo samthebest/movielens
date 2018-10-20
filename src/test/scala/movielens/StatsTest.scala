@@ -64,5 +64,19 @@ object StatsTest extends Specification {
         MovieRank(rank = 3, movieID = 2, title = "2t", averageRating = 4.0)
       )
     }
+
+    "Take an RDD of Movies and an RDD of Rating and return a RDD of MovieRank where the RDD is sorted by the rank" +
+      " and then sorted by movieID (reversed) (so that results are deterministic)" +
+      " (1 being highest). Also only return N results." in {
+      Stats.topMovies(movies, sc.makeRDD(Seq(
+        Rating(userID = 1, movieID = 1, rating = 5),
+        Rating(userID = 3, movieID = 3, rating = 5),
+        Rating(userID = 2, movieID = 2, rating = 5)
+      )), 3).collect().toList must_=== List(
+        MovieRank(rank = 1, movieID = 3, title = "3t", averageRating = 5.0),
+        MovieRank(rank = 2, movieID = 2, title = "2t", averageRating = 5.0),
+        MovieRank(rank = 3, movieID = 1, title = "1t", averageRating = 5.0)
+      )
+    }
   }
 }

@@ -47,7 +47,7 @@ After building
 
 `java -cp target/scala-2.11/movielens-assembly-1.jar movielens.StatsApp`
 
-Output will be in `data/output/`
+Output will be in `data/target/`
 
 # Test
 

@@ -1,14 +1,9 @@
 package movielens
 
-import java.io.File
-import java.nio.file.{Path, Files}
-import java.util.Comparator
+import java.nio.file.{Files, Path}
+import movielens.StaticSparkContext._
 import org.apache.commons.io.FileUtils
-
 import org.specs2.mutable.Specification
-import StaticSparkContext._
-
-import scala.io.Source
 
 object IOTest extends Specification {
   "IO.readMovies" should {
@@ -22,9 +17,9 @@ object IOTest extends Specification {
           Movie(4, "Waiting to Exhale (1995)", List("Comedy", "Drama")),
           Movie(5, "Father of the Bride Part II (1995)", List("Comedy")),
           Movie(6, "Heat (1995)", List("Action", "Crime", "Thriller")),
-          Movie(7, "Sabrina (1995)", List("Comedy", "Romance")),
-          Movie(8, "Tom and Huck (1995)", List("Adventure", "Children's")),
-          Movie(9, "Sudden Death (1995)", List("Action"))
+          Movie(1287, "Sabrina (1995)", List("Comedy", "Romance")),
+          Movie(2355, "Tom and Huck (1995)", List("Adventure", "Children's")),
+          Movie(2804, "Sudden Death (1995)", List("Action"))
         )
     }
   }

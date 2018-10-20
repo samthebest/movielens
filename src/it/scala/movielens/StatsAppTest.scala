@@ -1,8 +1,6 @@
 package movielens
 
 import java.io.File
-import java.nio.file.{Files, Path}
-
 import org.specs2.mutable.Specification
 import StaticSparkContext._
 import org.apache.commons.io.FileUtils
@@ -12,24 +10,22 @@ object StatsAppTest extends Specification {
   "StatsApp.main when given input files movies-sample.dat and ratings-sample.dat" should {
     main(Array(
       System.getProperty("user.dir") + "/src/test/resources/movies-sample.dat",
-      System.getProperty("user.dir") + "/src/test/resources/ratings-sample.dat"
+      System.getProperty("user.dir") + "/src/test/resources/ratings-sample.dat",
+      "3"
     ))
 
     import ss.implicits._
 
-    val (userStats, genreCounts) =
+    val (userStats: String, genreCounts: String, topMovies: List[MovieRank]) =
       try {
-        val userStats: String = sc.textFile(userStatsPath).collect().toList.sortBy(_.take(1)).mkString("\n")
-        val genreCounts: String = sc.textFile(genreCountsPath).collect().toList.sortBy(_.take(2)).mkString("\n")
-        //    val topMovies: String = ss.read.parquet(topMoviesPath).as[MovieRank].collect().toList.sortBy(_.movieID)
-
-        (userStats, genreCounts)
+        (sc.textFile(userStatsPath).collect().toList.sortBy(_.take(1)).mkString("\n"),
+          sc.textFile(genreCountsPath).collect().toList.sortBy(_.take(2)).mkString("\n"),
+          ss.read.parquet(topMoviesPath).as[MovieRank].collect().toList)
       } finally {
         FileUtils.deleteDirectory(new File(userStatsPath))
         FileUtils.deleteDirectory(new File(genreCountsPath))
         FileUtils.deleteDirectory(new File(topMoviesPath))
       }
-
 
     "Output a directory called user-stats in ./data/target " +
       "containing CSV files which contains a list of users with no of movies they rated " +
@@ -43,7 +39,6 @@ object StatsAppTest extends Specification {
     "Output a directory called genre-counts in ./data/target " +
       "containing CSV files which contains a list of unique Genres and no of movies " +
       "under each genre" in {
-
       genreCounts must_===
         """Action,2
           |Adventure,2
@@ -57,8 +52,14 @@ object StatsAppTest extends Specification {
           |Thriller,1""".stripMargin
     }
 
-    "Output a directory called top-100-movies in ./data/target " +
-      "containing parquet files which contains the top 100 movies based on their ratings. " +
-      "This should have fields, Rank (1-100), Movie Id, Title, Average Rating. Rank 1 is the most popular movie."
+    "Output a directory called top-movies in ./data/target " +
+      "containing parquet files which contains the top 3 movies based on their ratings. " +
+      "This should have fields, Rank (1-3), Movie Id, Title, Average Rating. Rank 1 is the most popular movie." in {
+      topMovies must_=== List(
+        MovieRank(1, 2804, "Sudden Death (1995)", 5.0),
+        MovieRank(2, 2355, "Tom and Huck (1995)", 5.0),
+        MovieRank(3, 1287, "Sabrina (1995)", 5.0)
+      )
+    }
   }
 }

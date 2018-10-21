@@ -21,8 +21,8 @@ object Stats {
       case (genre, count) => GenreCount(genre, count)
     }
 
-  // Observe we avoid a join here, but we assume `limit` is not very large. Considerably different algorithm required for
-  // large `limit`
+  // Observe we avoid a join here, but we assume `limit` is not very large. Considerably different algorithm required
+  // for large `limit`
   def topMovies(movies: RDD[Movie], ratings: RDD[Rating], limit: Int): RDD[MovieRank] = {
     val ratingsMap: Map[Int, (Double, Int)] =
       ratings.map(rating => rating.movieID -> CountAndRatingTotal(1, rating.rating))

@@ -15,7 +15,7 @@ case class GenreCount(genre: String, numberOfMovies: Long)
 
 case class MovieRank(rank: Int, movieID: Int, title: String, averageRating: Double)
 
-// Note we cannot use sparkSession.read for reading since it doesn't support "::" delimeter, nor nested lists
+// Note we cannot use sparkSession.read for reading since it doesn't support delimeter.length > 1, nor nested lists
 object IO {
   val inputDelimeter = "::"
 
@@ -37,8 +37,10 @@ object IO {
       )
     }
 
-  def write[T: Encoder](path: String, data: RDD[T])(implicit ss: SparkSession): Unit = {
-    import ss.implicits._
-    data.toDS().write.option("header", "false").csv(path)
+  implicit class PimpedRDD[T: Encoder](data: RDD[T]) {
+    def writeCSV(path: String)(implicit ss: SparkSession): Unit = {
+      import ss.implicits._
+      data.toDS().write.option("header", "false").csv(path)
+    }
   }
 }

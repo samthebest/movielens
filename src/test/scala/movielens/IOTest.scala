@@ -4,11 +4,12 @@ import java.nio.file.{Files, Path}
 import movielens.StaticSparkContext._
 import org.apache.commons.io.FileUtils
 import org.specs2.mutable.Specification
+import IO._
 
 object IOTest extends Specification {
   "IO.readMovies" should {
     "Read movies-sample.dat file and return RDD containing movie case classes corresponding to the file" in {
-      IO.readMovies(path = System.getProperty("user.dir") + "/src/test/resources/movies-sample.dat")
+      readMovies(path = System.getProperty("user.dir") + "/src/test/resources/movies-sample.dat")
       .collect().toList.sortBy(_.movieID) must_===
         List(
           Movie(1, "Toy Story (1995)", List("Animation", "Children's", "Comedy")),
@@ -26,7 +27,7 @@ object IOTest extends Specification {
 
   "IO.readRatings" should {
     "Read ratings-sample.dat file and return RDD containing ratings case classes corresponding to the file" in {
-      IO.readRatings(path = System.getProperty("user.dir") + "/src/test/resources/ratings-sample.dat")
+      readRatings(path = System.getProperty("user.dir") + "/src/test/resources/ratings-sample.dat")
       .collect().toList.sortBy(_.movieID) must_===
         List(
           Rating(1, 1193, 5),
@@ -50,14 +51,12 @@ object IOTest extends Specification {
       val path = tempFile.toString + "/userStats"
 
       import ss.implicits._
-      IO.write(
-        path = path,
-        data = sc.makeRDD(Seq(
-          UserStats(1, 1, 1.1),
-          UserStats(2, 5, 1.1),
-          UserStats(3, 10, 4.5)
-        ))
-      )
+      sc.makeRDD(Seq(
+        UserStats(1, 1, 1.1),
+        UserStats(2, 5, 1.1),
+        UserStats(3, 10, 4.5)
+      ))
+      .writeCSV(path)
 
       val output = sc.textFile(path).collect().sorted.mkString("\n")
 

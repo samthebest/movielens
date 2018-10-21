@@ -16,11 +16,6 @@ object StatsTest extends Specification {
     Rating(userID = 2, movieID = 1, rating = 5)
   ))
 
-//  Rating(userID = 1, movieID = 2, rating = 3),
-//  Rating(userID = 2, movieID = 2, rating = 5),
-
-//  (5 + 3) / 2 = 4.0
-
   val movies = sc.makeRDD(Seq(
     Movie(1, "1t", List("a", "b")),
     Movie(2, "2t", List("a", "b", "c")),

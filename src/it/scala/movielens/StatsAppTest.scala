@@ -17,11 +17,11 @@ object StatsAppTest extends Specification {
     import ss.implicits._
 
     val (userStats: String, genreCounts: String, topMovies: List[MovieRank]) =
-      try
+      try {
         (sc.textFile(userStatsPath).collect().toList.sortBy(_.take(1)).mkString("\n"),
           sc.textFile(genreCountsPath).collect().toList.sortBy(_.take(2)).mkString("\n"),
           ss.read.parquet(topMoviesPath).as[MovieRank].collect().toList)
-      finally {
+      } finally {
         FileUtils.deleteDirectory(new File(userStatsPath))
         FileUtils.deleteDirectory(new File(genreCountsPath))
         FileUtils.deleteDirectory(new File(topMoviesPath))

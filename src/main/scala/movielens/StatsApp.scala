@@ -3,6 +3,7 @@ package movielens
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession
+import IO._
 
 // TODO Use Scallop for getopts parsing
 object StatsApp {
@@ -23,13 +24,13 @@ object StatsApp {
     implicit val ss: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
     implicit val sc: SparkContext = ss.sparkContext
 
-    val movies: RDD[Movie] = IO.readMovies(moviesPath)
-    val ratings: RDD[Rating] = IO.readRatings(ratingsPath)
+    val movies: RDD[Movie] = readMovies(moviesPath)
+    val ratings: RDD[Rating] = readRatings(ratingsPath)
 
     import ss.implicits._
 
-    IO.write(userStatsPath, Stats.ratingsToUserStats(ratings))
-    IO.write(genreCountsPath, Stats.moviesToGenreCounts(movies))
+    Stats.ratingsToUserStats(ratings).writeCSV(userStatsPath)
+    Stats.moviesToGenreCounts(movies).writeCSV(genreCountsPath)
     Stats.topMovies(movies, ratings, limit).toDF().write.parquet(topMoviesPath)
   }
 }

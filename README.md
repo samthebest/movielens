@@ -43,9 +43,9 @@ e.g. Yum distros: `sudo yum install unzip`
 
 # Run
 
-After building, and having run bootstrap.sh to get the data.
+After building, and having run bootstrap.sh to get the data;
 
-`java -cp target/scala-2.11/movielens-assembly-1.jar movielens.StatsApp`
+`./bin/run.sh`
 
 Output will be in `data/target/`
 

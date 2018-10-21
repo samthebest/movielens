@@ -12,13 +12,9 @@ object StatsApp {
   val topMoviesPath = System.getProperty("user.dir") + "/data/target/top-movies"
 
   def main(args: Array[String]): Unit = {
-    val moviesPath: String =
-      if (args.isDefinedAt(0)) args(0) else System.getProperty("user.dir") + "/data/ml-1m/movies.dat"
-
-    val ratingsPath: String =
-      if (args.isDefinedAt(1)) args(1) else System.getProperty("user.dir") + "/data/ml-1m/ratings.dat"
-
-    val limit: Int = if (args.isDefinedAt(2)) args(2).toInt else 100
+    val moviesPath: String = args(0)
+    val ratingsPath: String = args(1)
+    val limit: Int = args(2).toInt
 
     val sparkConf: SparkConf = new SparkConf().setAppName("MovieLens").setMaster("local")
     implicit val ss: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
